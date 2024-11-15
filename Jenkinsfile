@@ -4,20 +4,20 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Building the project...'
-        sh './gradlew clean build' // Use Gradle Wrapper to build the project
+        sh './mvnw clean package' // Use Maven Wrapper to compile the project
       }
     }
     stage('Test') {
       steps {
         echo 'Running tests...'
-        sh './gradlew test' // Execute tests with Gradle
+        sh './mvnw test' // Execute unit tests
       }
     }
     stage('SonarQube Analysis') {
       steps {
         echo 'Running SonarQube Analysis...'
         withSonarQubeEnv('sonarqube') { // Use the SonarQube environment configured in Jenkins
-          sh './gradlew sonarqube -Dsonar.projectKey=petclinic'
+          sh './mvnw sonar:sonar -Dsonar.projectKey=petclinic'
         }
       }
     }
